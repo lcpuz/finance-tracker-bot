@@ -1,12 +1,19 @@
 package lang
 
 var (
-	// Welcome message in different languages
+	// Messages
 	WelcomeMessage = map[string]string{
 		"uz": "👋 Assalomu alaykum. Finance Tracker Botga xush kelibsiz!\n\nMen sizning moliyangizni osonlik bilan boshqarishda yordam beraman. Xarajatlaringizni yozish, daromadlaringizni ro'yxatga olish yoki hisobotlar tuzishni istaysizmi? Mana, men sizga yordam bera olishim mumkin.\n\nFinanc eTracker Bot bilan qilishingiz mumkinlar:\n\n💸 Xarajatlarni qo'shish\n💰 Daromadlarni qo'shish\n📊 Hisobotlar tuzish\n📆 Budjet o'rnatish\n📅 Eslatmalar\n📈 Diagrammalar ko'rish\n🗂 Kategoriyalarni o'rnatish\n✅ Va boshqalar!",
 		"ru": "👋 Добро пожаловать в Finance Tracker Bot!\n\nЯ здесь, чтобы помочь вам легко отслеживать ваши финансы. Хотите записать ваши расходы, зафиксировать доходы или создать отчеты для лучшего управления своими деньгами? У меня есть все необходимое для этого.\n\nВот некоторые функции, которые вы можете использовать с Finance Tracker Bot:\n\n💸 Добавление расходов\n💰 Добавление доходов\n📊 Создание отчетов\n📆 Установка бюджета\n📅 Напоминания\n📈 Диаграммы\n🗂 Категории\n✅ И многое другое!",
 		"en": "👋 Welcome to Finance Tracker Bot!\n\nI'm here to help you keep track of your finances effortlessly. Whether you want to log your expenses, record your income, or generate reports to better manage your money, I've got you covered.\n\nHere are some things you can do with Finance Tracker Bot:\n\n💸 Add Expenses\n💰 Add Income\n📊 Generate Reports\n📆 Set Budgets\n📅 Reminders\n📈 Charts\n🗂 Categories\n✅ And much more!",
 		"ar": "👋 مرحبًا بك في Finance Tracker Bot!\n\nأنا هنا لمساعدتك في تتبع أمورك المالية بسهولة. سواء كنت ترغب في تسجيل نفقاتك، أو تسجيل دخلك، أو إنشاء تقارير لإدارة أموالك بشكل أفضل، لدي كل ما تحتاجه.\n\nإليك بعض الأشياء التي يمكنك القيام بها باستخدام Finance Tracker Bot:\n\n💸 إضافة مصاريف\n💰 إضافة دخل\n📊 إعداد التقارير\n📆 تعيين الميزانيات\n📅 تذكير\n📈 رسوم بيانية\n🗂 تصنيفات\n✅ وأكثر!",
+	}
+
+	UnknownMessage = map[string]string{
+		"uz": "Bunday buyruq mavjud emas. Iltimos, qaytadan urinib ko'ring.",
+		"ru": "Такой команды не существует. Пожалуйста, попробуйте еще раз.",
+		"en": "This command does not exist. Please try again.",
+		"ar": "هذا الأمر غير موجود. يرجى المحاولة مرة أخرى.",
 	}
 
 	// Main menu buttons

@@ -16,27 +16,46 @@ const (
 func (b *TelegramBot) handleCommand(message *tgbotapi.Message) {
 	switch message.Command() {
 	case StartCommand:
-		b.handleStart(message)
+		b.HandleStartCommand(message)
 	case HelpCommand:
-		b.handleHelp(message)
+		b.HandleHelpCommand(message)
 	case AboutCommand:
-		b.handleAbout(message)
+		b.HandleAboutCommand(message)
 	}
 }
 
-func (b *TelegramBot) handleStart(message *tgbotapi.Message) {
+func (b *TelegramBot) HandleStartCommand(message *tgbotapi.Message) {
 	//get user language
 	language := message.From.LanguageCode
-	b.language = language
 
+	//check if language is supported
+	if language == "uz" || language == "ru" || language == "en" || language == "ar" {
+		b.language = language
+	}
+
+	buttons := tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton(lang.Income[b.language]),
+			tgbotapi.NewKeyboardButton(lang.Spendings[b.language]),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton(lang.Report[b.language]),
+			tgbotapi.NewKeyboardButton(lang.Settings[b.language]),
+		),
+	)
+	//Make message
 	msg := tgbotapi.NewMessage(message.Chat.ID, lang.WelcomeMessage[b.language])
+	buttons.ResizeKeyboard = true
+	msg.ReplyMarkup = buttons
+
+	//Send message
 	_, err := b.bot.Send(msg)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func (b *TelegramBot) handleHelp(message *tgbotapi.Message) {
+func (b *TelegramBot) HandleHelpCommand(message *tgbotapi.Message) {
 	msg := tgbotapi.NewMessage(message.Chat.ID, "Yordam")
 	_, err := b.bot.Send(msg)
 	if err != nil {
@@ -44,7 +63,7 @@ func (b *TelegramBot) handleHelp(message *tgbotapi.Message) {
 	}
 }
 
-func (b *TelegramBot) handleAbout(message *tgbotapi.Message) {
+func (b *TelegramBot) HandleAboutCommand(message *tgbotapi.Message) {
 	msg := tgbotapi.NewMessage(message.Chat.ID, "Biz haqimizda")
 	_, err := b.bot.Send(msg)
 	if err != nil {

@@ -1,8 +1,6 @@
 package telegrambot
 
 import (
-	"log"
-
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
@@ -12,7 +10,10 @@ type TelegramBot struct {
 }
 
 func NewTelegramBot(bot *tgbotapi.BotAPI) *TelegramBot {
-	return &TelegramBot{bot: bot}
+	return &TelegramBot{
+		bot:      bot,
+		language: "en",
+	}
 }
 
 func (b *TelegramBot) StartTelegramBot() error {
@@ -47,13 +48,5 @@ func (b *TelegramBot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 		}
 
 		b.handleMessage(update.Message)
-	}
-}
-
-func (b *TelegramBot) handleMessage(message *tgbotapi.Message) {
-	msg := tgbotapi.NewMessage(message.Chat.ID, "Salom!")
-	_, err := b.bot.Send(msg)
-	if err != nil {
-		log.Println(err)
 	}
 }
