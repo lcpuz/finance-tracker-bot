@@ -1,1 +1,1 @@
-package bot
+package telegrambot

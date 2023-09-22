@@ -1,4 +1,4 @@
-package bot
+package telegrambot
 
 import (
 	"log"
@@ -7,7 +7,8 @@ import (
 )
 
 type TelegramBot struct {
-	bot *tgbotapi.BotAPI
+	bot      *tgbotapi.BotAPI
+	language string
 }
 
 func NewTelegramBot(bot *tgbotapi.BotAPI) *TelegramBot {
@@ -21,6 +22,8 @@ func (b *TelegramBot) StartTelegramBot() error {
 	}
 
 	b.handleUpdates(updates)
+
+	//change language
 
 	return nil
 }
