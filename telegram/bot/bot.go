@@ -2,17 +2,20 @@ package telegrambot
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/lcpuz/finance-tracker-bot/telegram/repository"
 )
 
 type TelegramBot struct {
-	bot      *tgbotapi.BotAPI
-	language string
+	bot        *tgbotapi.BotAPI
+	repository *repository.Repository
+	language   string
 }
 
-func NewTelegramBot(bot *tgbotapi.BotAPI) *TelegramBot {
+func NewTelegramBot(bot *tgbotapi.BotAPI, repository *repository.Repository) *TelegramBot {
 	return &TelegramBot{
-		bot:      bot,
-		language: "en",
+		bot:        bot,
+		repository: repository,
+		language:   "en",
 	}
 }
 
