@@ -1,11 +1,5 @@
 package lang
 
-const (
-	startComand = "start"
-	helpComand  = "help"
-	aboutComand = "about"
-)
-
 var (
 
 	// Main menu buttons
