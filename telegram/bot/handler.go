@@ -14,6 +14,11 @@ func (b *TelegramBot) handleMessage(message *tgbotapi.Message) {
 		if err != nil {
 			log.Println(err)
 		}
+	case lang.BackToStartFromIncome[b.language]:
+		err := b.HandleBack(message)
+		if err != nil {
+			log.Println(err)
+		}
 	default:
 		b.HandleUnknown(message)
 	}
@@ -25,4 +30,25 @@ func (b *TelegramBot) HandleUnknown(message *tgbotapi.Message) {
 	if err != nil {
 		return
 	}
+}
+
+func (b *TelegramBot) HandleBack(message *tgbotapi.Message) error {
+	buttons := tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton(lang.Income[b.language]),
+			tgbotapi.NewKeyboardButton(lang.Spendings[b.language]),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton(lang.Report[b.language]),
+			tgbotapi.NewKeyboardButton(lang.Settings[b.language]),
+		),
+	)
+
+	msg := tgbotapi.NewMessage(message.Chat.ID, lang.ChooseAction[b.language])
+	msg.ReplyMarkup = buttons
+	_, err := b.bot.Send(msg)
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -38,6 +38,13 @@ var (
 		"ar": "⬇️دخل",
 	}
 
+	BackToStartFromIncome = map[string]string{
+		"uz": "⬅️Orqaga",
+		"ru": "⬅️Назад",
+		"en": "⬅️Back",
+		"ar": "⬅️عودة",
+	}
+
 	Spendings = map[string]string{
 		"uz": "⬆️Chiqim",
 		"ru": "⬆️Расход",
@@ -180,5 +187,12 @@ var (
 		"ru": "➕Добавить доход",
 		"en": "➕Add income",
 		"ar": "➕إضافة دخل",
+	}
+
+	ChooseAction = map[string]string{
+		"uz": "Tugmalarda birini tanlang",
+		"ru": "Выберите одну из кнопок",
+		"en": "Choose one of the buttons",
+		"ar": "اختر أحد الأزرار",
 	}
 )

@@ -25,6 +25,9 @@ func (b *TelegramBot) HandleIncome(message *tgbotapi.Message) error {
 				tgbotapi.NewKeyboardButton(lang.AddIncomeCategory[b.language]),
 				tgbotapi.NewKeyboardButton(lang.AddIncome[b.language]),
 			),
+			tgbotapi.NewKeyboardButtonRow(
+				tgbotapi.NewKeyboardButton(lang.BackToStartFromIncome[b.language]),
+			),
 		)
 		msg := tgbotapi.NewMessage(message.Chat.ID, lang.NoCategories[b.language])
 		msg.ReplyMarkup = buttons
@@ -48,6 +51,7 @@ func (b *TelegramBot) HandleIncome(message *tgbotapi.Message) error {
 			),
 			tgbotapi.NewKeyboardButtonRow(
 				tgbotapi.NewKeyboardButton(lang.AddIncome[b.language]),
+				tgbotapi.NewKeyboardButton(lang.BackToStartFromIncome[b.language]),
 			),
 		)
 		msg := tgbotapi.NewMessage(message.Chat.ID, lang.IncomeCategoriesMessage[b.language])
