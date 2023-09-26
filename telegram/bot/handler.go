@@ -7,7 +7,7 @@ import (
 	"github.com/lcpuz/finance-tracker-bot/telegram/lang"
 )
 
-func (b *TelegramBot) handleMessage(message *tgbotapi.Message) {
+func (b *TelegramBot) HandleMessage(message *tgbotapi.Message) {
 	switch message.Text {
 	case lang.Income[b.language]:
 		err := b.HandleIncome(message)

@@ -20,26 +20,26 @@ func NewTelegramBot(bot *tgbotapi.BotAPI, repository *repository.Repository) *Te
 }
 
 func (b *TelegramBot) StartTelegramBot() error {
-	updates, err := b.initUpdatesChannel()
+	updates, err := b.InitUpdatesChannel()
 	if err != nil {
 		return err
 	}
 
-	b.handleUpdates(updates)
+	b.HandleUpdates(updates)
 
 	//change language
 
 	return nil
 }
 
-func (b *TelegramBot) initUpdatesChannel() (tgbotapi.UpdatesChannel, error) {
+func (b *TelegramBot) InitUpdatesChannel() (tgbotapi.UpdatesChannel, error) {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
 	return b.bot.GetUpdatesChan(u), nil
 }
 
-func (b *TelegramBot) handleUpdates(updates tgbotapi.UpdatesChannel) {
+func (b *TelegramBot) HandleUpdates(updates tgbotapi.UpdatesChannel) {
 	for update := range updates {
 		if update.Message == nil {
 			continue
@@ -50,6 +50,6 @@ func (b *TelegramBot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 			continue
 		}
 
-		b.handleMessage(update.Message)
+		b.HandleMessage(update.Message)
 	}
 }
