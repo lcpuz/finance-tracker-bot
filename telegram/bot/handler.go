@@ -14,6 +14,11 @@ func (b *TelegramBot) HandleMessage(message *tgbotapi.Message) {
 		if err != nil {
 			log.Println(err)
 		}
+	case lang.AddIncomeCategory[b.language]:
+		err := b.HandleAddIncomeCategory(message)
+		if err != nil {
+			log.Println(err)
+		}
 	case lang.BackToStartFromIncome[b.language]:
 		err := b.HandleBack(message)
 		if err != nil {
