@@ -5,5 +5,5 @@ const (
 	CreateCategory = `INSERT INTO tbl_categories (name, user_id) VALUES ($1, $2)`
 
 	// GetCategories ...
-	GetCategories = `SELECT id, name FROM tbl_categories WHERE user_id = $1`
+	GetCategories = `SELECT category_id, category_name FROM tbl_categories WHERE user_id = $1`
 )

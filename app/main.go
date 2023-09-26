@@ -46,7 +46,7 @@ func main() {
 	}
 
 	//Set bot debug mode
-	botToken.Debug = true
+	botToken.Debug = false
 
 	//Create new telegram bot
 	telegramBot := telegrambot.NewTelegramBot(botToken, repository)

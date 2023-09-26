@@ -5,6 +5,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/lcpuz/finance-tracker-bot/telegram/lang"
+	"github.com/lcpuz/finance-tracker-bot/telegram/request"
 )
 
 const (
@@ -25,6 +26,22 @@ func (b *TelegramBot) handleCommand(message *tgbotapi.Message) {
 }
 
 func (b *TelegramBot) HandleStartCommand(message *tgbotapi.Message) {
+
+	//Create user
+	UserRequest := request.CreateUsersRequest{
+		UserChatID:   message.From.ID,
+		UserName:     &message.From.UserName,
+		UserNickName: message.From.FirstName,
+	}
+
+	err := b.repository.CreateUser(UserRequest)
+	//if error contains "duplicate key value violates unique constraint" then user already exists
+	if err != nil && err.Error() != "duplicate key value violates unique constraint " {
+		log.Println("User exists")
+	} else {
+		log.Println("User created")
+	}
+
 	//get user language
 	language := message.From.LanguageCode
 
@@ -49,7 +66,7 @@ func (b *TelegramBot) HandleStartCommand(message *tgbotapi.Message) {
 	msg.ReplyMarkup = buttons
 
 	//Send message
-	_, err := b.bot.Send(msg)
+	_, err = b.bot.Send(msg)
 	if err != nil {
 		log.Println(err)
 	}

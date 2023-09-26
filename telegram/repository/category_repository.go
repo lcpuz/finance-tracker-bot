@@ -29,13 +29,13 @@ func (r *CategoryPostgres) CreateCategory(CategoryRequest request.CreateCategory
 	return nil
 }
 
-func (r *CategoryPostgres) GetCategories() ([]request.CategoriesResponse, error) {
+func (r *CategoryPostgres) GetCategories(UserID int64) ([]request.CategoriesResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	var Categories []request.CategoriesResponse
 
-	row, err := r.db.QueryContext(ctx, query.GetCategories)
+	row, err := r.db.QueryContext(ctx, query.GetCategories, UserID)
 	if err != nil {
 		return nil, err
 	}

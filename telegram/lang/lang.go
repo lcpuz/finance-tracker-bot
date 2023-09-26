@@ -16,6 +16,20 @@ var (
 		"ar": "هذا الأمر غير موجود. يرجى المحاولة مرة أخرى.",
 	}
 
+	NoCategories = map[string]string{
+		"uz": "Sizda kirim turlari hali mavjud emas. Yangi kirim turini qo'shish uchun" + AddIncomeCategory["uz"] + "tugmasini bosing. Kirim turisiz kirim qilmoqchi bo'lsangiz, iltimos," + AddIncome["uz"] + "tugmasini bosing.",
+		"ru": "У вас еще нет категорий доходов. Чтобы добавить новую категорию доходов, нажмите кнопку " + AddIncomeCategory["ru"] + ". Если вы хотите добавить доход без категории, нажмите кнопку " + AddIncome["ru"] + ".",
+		"en": "You don't have any income categories yet. To add a new income category, press the " + AddIncomeCategory["en"] + " button. If you want to add an income without a category, press the " + AddIncome["en"] + " button.",
+		"ar": "ليس لديك أي فئات دخل حتى الآن. لإضافة فئة دخل جديدة، اضغط على زر ➕إضافة فئة. إذا كنت ترغب في إضافة دخل بدون فئة، اضغط على زر ➕إضافة دخل.",
+	}
+
+	IncomeCategoriesMessage = map[string]string{
+		"uz": "Kirim turini tanlang",
+		"ru": "Выберите категорию доходов",
+		"en": "Choose income category",
+		"ar": "اختر فئة الدخل",
+	}
+
 	// Main menu buttons
 	Income = map[string]string{
 		"uz": "⬇️Kirim",
@@ -152,5 +166,19 @@ var (
 		"ru": "Каждый день",
 		"en": "Every day",
 		"ar": "كل يوم",
+	}
+
+	AddIncomeCategory = map[string]string{
+		"uz": "➕Kirim turini qo'shish",
+		"ru": "➕Добавить категорию доходов",
+		"en": "➕Add income category",
+		"ar": "➕إضافة فئة دخل",
+	}
+
+	AddIncome = map[string]string{
+		"uz": "➕Kirim qo'shish",
+		"ru": "➕Добавить доход",
+		"en": "➕Add income",
+		"ar": "➕إضافة دخل",
 	}
 )
