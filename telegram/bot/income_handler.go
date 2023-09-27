@@ -106,15 +106,12 @@ func (b *TelegramBot) HandleIncomeCategory(message *tgbotapi.Message) error {
 	if err != nil {
 		// If category already exists - log and send a message from lang.CategoryAlreadyExists
 		if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
-			log.Printf("Category already exists: %v", err)
 			msg := tgbotapi.NewMessage(message.Chat.ID, lang.CategoryAlreadyExists[b.language])
 			_, err = b.bot.Send(msg)
 			if err != nil {
 				log.Println("Error sending message:", err)
 			}
 		} else {
-			// If there is another error - log and send a message from lang.FailAddIncomeCategory
-			log.Printf("Error adding category: %v", err)
 			msg := tgbotapi.NewMessage(message.Chat.ID, lang.FailAddIncomeCategory[b.language])
 			_, err = b.bot.Send(msg)
 			if err != nil {
@@ -123,7 +120,6 @@ func (b *TelegramBot) HandleIncomeCategory(message *tgbotapi.Message) error {
 		}
 	} else {
 		// Category added successfully - log and send a message from lang.SuccessAddIncomeCategory
-		log.Println("Category added successfully.")
 		msg := tgbotapi.NewMessage(message.Chat.ID, lang.SuccessAddIncomeCategory[b.language])
 		_, err = b.bot.Send(msg)
 		if err != nil {
