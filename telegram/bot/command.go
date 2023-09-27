@@ -41,6 +41,16 @@ func (b *TelegramBot) HandleStartCommand(message *tgbotapi.Message) {
 	} else {
 		log.Println("User created")
 	}
+	// Get user id
+	UserId, err := b.repository.GetUserID(UserRequest.UserChatID)
+	if err != nil {
+		log.Println(err)
+	}
+	//Create default states
+	err = b.repository.CreateDefaultStates(UserId)
+	if err != nil {
+		log.Println(err)
+	}
 
 	//get user language
 	language := message.From.LanguageCode

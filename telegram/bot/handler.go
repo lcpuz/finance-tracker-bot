@@ -7,26 +7,45 @@ import (
 	"github.com/lcpuz/finance-tracker-bot/telegram/lang"
 )
 
-func (b *TelegramBot) HandleMessage(message *tgbotapi.Message) {
-	switch message.Text {
-	case lang.Income[b.language]:
-		err := b.HandleIncome(message)
-		if err != nil {
-			log.Println(err)
-		}
-	case lang.AddIncomeCategory[b.language]:
-		err := b.HandleAddIncomeCategory(message)
-		if err != nil {
-			log.Println(err)
-		}
-	case lang.BackToStartFromIncome[b.language]:
-		err := b.HandleBack(message)
-		if err != nil {
-			log.Println(err)
-		}
-	default:
-		b.HandleUnknown(message)
+func (b *TelegramBot) HandleMessage(message *tgbotapi.Message) error {
+	UserId, err := b.repository.GetUserID(message.From.ID)
+	if err != nil {
+		return err
 	}
+
+	GetIncomeCategoryState, err := b.repository.GetIncomeCategoryState(UserId)
+	if err != nil {
+		return err
+	}
+
+	if GetIncomeCategoryState == 1 {
+		err := b.HandleIncomeCategory(message)
+		if err != nil {
+			log.Println(err)
+		}
+	} else {
+		switch message.Text {
+		case lang.Income[b.language]:
+			err := b.HandleIncome(message)
+			if err != nil {
+				log.Println(err)
+			}
+		case lang.AddIncomeCategory[b.language]:
+			err := b.AddIncomeCategory(message)
+			if err != nil {
+				log.Println(err)
+			}
+		case lang.BackToStartFromIncome[b.language]:
+			err := b.HandleBack(message)
+			if err != nil {
+				log.Println(err)
+			}
+		default:
+			b.HandleUnknown(message)
+		}
+	}
+
+	return nil
 }
 
 func (b *TelegramBot) HandleUnknown(message *tgbotapi.Message) {

@@ -1,6 +1,8 @@
 package telegrambot
 
 import (
+	"fmt"
+	"log"
 	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -62,46 +64,79 @@ func (b *TelegramBot) HandleIncome(message *tgbotapi.Message) error {
 	return nil
 }
 
-func (b *TelegramBot) HandleAddIncomeCategory(message *tgbotapi.Message) error {
+func (b *TelegramBot) AddIncomeCategory(message *tgbotapi.Message) error {
+	//Remove the keyboard
+	RemoveKeyboard := tgbotapi.NewRemoveKeyboard(true)
+
 	UserID, err := b.repository.GetUserID(message.From.ID)
 	if err != nil {
 		return err
 	}
-	
-	CreateCategoryRequest := request.CreateCategoryRequest{
-		CategoryName:   message.Text,
-		CategoryUserID: UserID,
-	}
 
-	// Add Category
-	err = b.repository.CreateCategory(CreateCategoryRequest)
+	err = b.repository.IncomeCategoryStateRepository.UpdateIncomeCategoryState(UserID, 1)
 	if err != nil {
-		//if err contains "duplicate key value violates unique constraint" then send message "Category already exists"
-		if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
-			msg := tgbotapi.NewMessage(message.Chat.ID, lang.CategoryAlreadyExists[b.language])
-			_, err = b.bot.Send(msg)
-			if err != nil {
-				return err
-			}
-			b.HandleIncome(message)
-		}
-
-		msg := tgbotapi.NewMessage(message.Chat.ID, lang.FailAddIncomeCategory[b.language])
-		_, err = b.bot.Send(msg)
-		if err != nil {
-			return err
-		}
-
-		b.HandleIncome(message)
+		fmt.Println("error in CreateIncomeCategoryState")
 	}
 
-	msg := tgbotapi.NewMessage(message.Chat.ID, lang.SuccessAddIncomeCategory[b.language])
-	// Send the message
+	msg := tgbotapi.NewMessage(message.Chat.ID, lang.AddIncomeCategoryText[b.language])
+	msg.ReplyMarkup = RemoveKeyboard
 	_, err = b.bot.Send(msg)
 	if err != nil {
 		return err
 	}
 
-	b.HandleIncome(message)
 	return nil
+}
+
+func (b *TelegramBot) HandleIncomeCategory(message *tgbotapi.Message) error {
+	// Get User ID
+	UserID, err := b.repository.GetUserID(message.From.ID)
+	if err != nil {
+		return err
+	}
+
+	// Create a category
+	CreateCategoryRequest := request.CreateCategoryRequest{
+		CategoryName:   message.Text,
+		CategoryUserID: UserID,
+	}
+
+	// Attempt to create the category
+	err = b.repository.IncomeCategoryRepository.CreateCategory(CreateCategoryRequest)
+	if err != nil {
+		// If category already exists - log and send a message from lang.CategoryAlreadyExists
+		if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
+			log.Printf("Category already exists: %v", err)
+			msg := tgbotapi.NewMessage(message.Chat.ID, lang.CategoryAlreadyExists[b.language])
+			_, err = b.bot.Send(msg)
+			if err != nil {
+				log.Println("Error sending message:", err)
+			}
+		} else {
+			// If there is another error - log and send a message from lang.FailAddIncomeCategory
+			log.Printf("Error adding category: %v", err)
+			msg := tgbotapi.NewMessage(message.Chat.ID, lang.FailAddIncomeCategory[b.language])
+			_, err = b.bot.Send(msg)
+			if err != nil {
+				log.Println("Error sending message:", err)
+			}
+		}
+	} else {
+		// Category added successfully - log and send a message from lang.SuccessAddIncomeCategory
+		log.Println("Category added successfully.")
+		msg := tgbotapi.NewMessage(message.Chat.ID, lang.SuccessAddIncomeCategory[b.language])
+		_, err = b.bot.Send(msg)
+		if err != nil {
+			log.Println("Error sending message:", err)
+		}
+
+		// Delete the state
+		err = b.repository.IncomeCategoryStateRepository.DeleteIncomeCategoryState(UserID)
+		if err != nil {
+			log.Println("Error deleting category state:", err)
+		}
+	}
+
+	// Handle income after category is added or if an error occurred
+	return b.HandleIncome(message)
 }
