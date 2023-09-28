@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS tbl_user_states (
 CREATE TABLE IF NOT EXISTS tbl_transactions (
     transaction_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
-    category_id INT NOT NULL,
+    category_id INT,
     transaction_type INT NOT NULL, -- 0: income, 1: expense, 2: uncategorized 
     transaction_amount INT NOT NULL,
     transaction_description VARCHAR(255),

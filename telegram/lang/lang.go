@@ -24,10 +24,10 @@ var (
 	}
 
 	IncomeCategoriesMessage = map[string]string{
-		"uz": "Kirim turini tanlang",
-		"ru": "Выберите категорию доходов",
-		"en": "Choose income category",
-		"ar": "اختر فئة الدخل",
+		"uz": "Kirim turini tanlang, yoki turlanmagan kirim qilish uchun" + AddIncome["uz"] + "tugmasini bosing.",
+		"ru": "Выберите категорию доходов или нажмите кнопку " + AddIncome["ru"] + " для добавления дохода без категории.",
+		"en": "Choose an income category or press the " + AddIncome["en"] + " button to add an income without a category.",
+		"ar": "اختر فئة الدخل أو اضغط على زر ➕إضافة دخل لإضافة دخل بدون فئة.",
 	}
 
 	// Main menu buttons
