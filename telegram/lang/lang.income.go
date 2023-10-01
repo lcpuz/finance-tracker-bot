@@ -29,4 +29,25 @@ var (
 		"en": "Error adding category",
 		"ar": "خطأ في إضافة الفئة",
 	}
+
+	TransactionAmmountText = map[string]string{
+		"uz": "Summani kiriting",
+		"ru": "Введите сумму",
+		"en": "Enter the amount",
+		"ar": "أدخل المبلغ",
+	}
+
+	TransactionDescriptionText = map[string]string{
+		"uz": "Izohni kiriting",
+		"ru": "Введите комментарий",
+		"en": "Enter a comment",
+		"ar": "أدخل تعليقًا",
+	}
+
+	SuccessAddUncategorizedIncome = map[string]string{
+		"uz": "Kirim muvaffaqiyatli qo'shildi",
+		"ru": "Доход успешно добавлен",
+		"en": "Income added successfully",
+		"ar": "تمت إضافة الدخل بنجاح",
+	}
 )

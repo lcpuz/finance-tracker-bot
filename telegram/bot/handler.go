@@ -18,9 +18,18 @@ func (b *TelegramBot) HandleMessage(message *tgbotapi.Message) error {
 		return err
 	}
 
+	uncategorizedIncomeState, err := b.repository.GetUncategorizedIncomeState(userID)
+	if err != nil {
+		return err
+	}
+
 	switch {
 	case incomeCategoryState == 1:
 		return b.HandleIncomeCategory(message)
+	case uncategorizedIncomeState >= 1:
+		return b.AddUncategorizedIncome(message)
+	case message.Text == lang.AddIncome[b.language]:
+		return b.AddUncategorizedIncome(message)
 	case message.Text == lang.Income[b.language]:
 		return b.HandleIncome(message)
 	case message.Text == lang.AddIncomeCategory[b.language]:

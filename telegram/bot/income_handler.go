@@ -136,3 +136,86 @@ func (b *TelegramBot) HandleIncomeCategory(message *tgbotapi.Message) error {
 	// Handle income after category is added or if an error occurred
 	return b.HandleIncome(message)
 }
+
+func (b *TelegramBot) AddUncategorizedIncome(message *tgbotapi.Message) error {
+	// Remove the keyboard
+	RemoveKeyboard := tgbotapi.NewRemoveKeyboard(true)
+
+	UserID, err := b.repository.GetUserID(message.From.ID)
+	if err != nil {
+		return err
+	}
+
+	UserState, err := b.repository.UncategorizedIncomeStateRepository.GetUncategorizedIncomeState(UserID)
+	if err != nil {
+		return err
+	}
+
+	switch UserState {
+	case 0:
+		//update state
+		err = b.repository.UncategorizedIncomeStateRepository.UpdateUncategorizedIncomeState(UserID, 1)
+		if err != nil {
+			return err
+		}
+
+		msg := tgbotapi.NewMessage(message.Chat.ID, lang.TransactionAmmountText[b.language])
+		msg.ReplyMarkup = RemoveKeyboard
+		_, err = b.bot.Send(msg)
+		if err != nil {
+			return err
+		}
+	case 1:
+		TransactionAmmount := message.Text
+		if _, ok := b.UncategorizedIncome[UserID]; !ok {
+			b.UncategorizedIncome[UserID] = &request.AddUncategorizedIncomeRequest{}
+		}
+		b.UncategorizedIncome[UserID].UserID = UserID
+		b.UncategorizedIncome[UserID].TransactionAmmount = TransactionAmmount
+
+		//Update state
+		err = b.repository.UncategorizedIncomeStateRepository.UpdateUncategorizedIncomeState(UserID, 2)
+		if err != nil {
+			return err
+		}
+
+		msg := tgbotapi.NewMessage(message.Chat.ID, lang.TransactionDescriptionText[b.language])
+		msg.ReplyMarkup = RemoveKeyboard
+		_, err = b.bot.Send(msg)
+		if err != nil {
+			return err
+		}
+	case 2:
+		TransactionDescription := message.Text
+		if _, ok := b.UncategorizedIncome[UserID]; !ok {
+			b.UncategorizedIncome[UserID] = &request.AddUncategorizedIncomeRequest{}
+		}
+		b.UncategorizedIncome[UserID].TransactionDescription = TransactionDescription
+
+		err = b.repository.IncomeRepository.AddUncategorizedIncome(*b.UncategorizedIncome[UserID])
+		fmt.Println(b.UncategorizedIncome[UserID])
+		if err != nil {
+			fmt.Println("error in AddUncategorizedIncome")
+		}
+
+		//Delete state
+		err = b.repository.UncategorizedIncomeStateRepository.DeleteUncategorizedIncomeState(UserID)
+		if err != nil {
+			fmt.Println("error in DeleteUncategorizedIncomeState")
+		}
+
+		//remove b.UncategorizedIncome[UserID]
+		delete(b.UncategorizedIncome, UserID)
+
+		msg := tgbotapi.NewMessage(message.Chat.ID, lang.SuccessAddUncategorizedIncome[b.language])
+		_, err = b.bot.Send(msg)
+		if err != nil {
+			return err
+		}
+
+		b.HandleIncome(message)
+
+	}
+
+	return nil
+}

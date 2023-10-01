@@ -2,7 +2,7 @@ package statesRepository
 
 import (
 	"github.com/jmoiron/sqlx"
-	stateQyery "github.com/lcpuz/finance-tracker-bot/telegram/repository/query/state"
+	stateQuery "github.com/lcpuz/finance-tracker-bot/telegram/repository/query/state"
 )
 
 type StatesRepository struct {
@@ -14,7 +14,7 @@ func NewStatesRepository(db *sqlx.DB) *StatesRepository {
 }
 
 func (r *StatesRepository) CreateDefaultStates(UserID int64) error {
-	_, err := r.db.Exec(stateQyery.CreateDefaultStates, UserID)
+	_, err := r.db.Exec(stateQuery.CreateDefaultStates, UserID)
 	if err != nil {
 		return err
 	}

@@ -1,4 +1,4 @@
-package stateQyery
+package stateQuery
 
 const (
 	CreateIncomeCategoryState = `INSERT INTO tbl_user_states (user_id, income_category_state) VALUES ($1, $2)`

@@ -23,7 +23,8 @@ func (r *IncomePostgres) AddUncategorizedIncome(UncategorizedIncome request.AddU
 
 	_, err := r.db.ExecContext(ctx, transactionQuery.AddUncategorizedIncome,
 		UncategorizedIncome.UserID,
-		UncategorizedIncome.TransactionAmount,
+		3,
+		UncategorizedIncome.TransactionAmmount,
 		UncategorizedIncome.TransactionDescription)
 
 	if err != nil {
